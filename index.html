@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/element/index.css">
+    <title>数据库性能测评工具</title>
+    <link rel='stylesheet' href='css/index.css'>
+</head>
+<body>
+    <div id="app">
+      <!-- {{ message }} -->
+      <div class="title"><span style="color:white;text-shadow:1px 1px 1px #000;">数据库性能评测工具</span></div>
+        <!-- 选择框 -->
+        <el-tabs v-model="selTabName" class="selectionbox" @tab-click="tabHandleClick">
+          <!-- 性能测评 -->
+          <el-tab-pane label="性能测评" class="performance" name="first">
+            <div class="shujubox">
+              <!-- 1.数据初始化配置 -->
+                <!-- 下拉框 -->
+                <template>
+                  
+                  <span> 数据规模<span>
+                  <el-select class="s1" v-model="value" clearable placeholder="请选择">
+                      <el-option
+                          v-for="item in options"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value"
+                      />
+                  </el-select>
+                  <!-- 按钮 -->
+                  <el-button class="button1" style="display: inline-block" @click="selectChange">初始化</el-button>
+                  <el-row>
+                  <!--进度条1-->
+                  	<el-col :span="3" style="padding-left:10px;width:800px">
+                  				<el-progress  :percentage="perc1" :color="customColor1" v-show="perc1!=0"style=""></el-progress>
+                		</el-col>
+                		</br>
+                  		<el-col :span="20">
+                  				<div class="box1"  v-show="perc1!=0" v-html="selectText" style=""></div> 
+                  		</el-col>
+                  	
+                </el-row>
+                </template>
+              </div>
+              <!-- 2.业务图表 -->
+              <div class="yuwubox">
+             
+	                  <span>业务运行 <span>
+	                  <el-select class="s1" v-model="value1" clearable style="width:300px">
+	                    <el-option
+	                        v-for="item in options1"
+	                        :key="item.value"
+	                        :label="item.label"
+	                        :value="item.value">
+	                    </el-option>
+	                  </el-select>
+	                  	<span>数据库隔离级别<span>
+	                  <el-select class="s1" v-model="value2" clearable style="width:100px">
+	                    <el-option
+	                        v-for="item in options2"
+	                        :key="item.value"
+	                        :label="item.label"
+	                        :value="item.value">
+	                    </el-option>
+	                  </el-select>
+	                    <el-button class="button2" style="display: inline-block" @click="selectChange2">运行</el-button>
+                  </div>
+                  <!-- 按钮 -->
+                
+                  
+                   <el-row>
+                   <!--进度条2-->
+                  		<el-col  :span="3" style="padding-left:10px;width:800px">
+                  				<el-progress :percentage="perc2" :color="customColor" v-show="perc2!=0" style=""></el-progress>
+                		</el-col>
+                		</br>
+                  		<el-col :span="20">
+                   			<div class="box2" v-html="selectText2" v-show="perc2!=0" style="overflow:auto;"></div> 
+                  		</el-col>
+                  
+                	</el-row>
+ 
+              <!-- 折线图 -->
+              <div class="font1" style="font-size:16px;color:dimgrey;font-family:微软雅黑;margin-top:35px; font-weight:bold; margin-bottom:5px;" v-show="brokenShow" >耗时(ms)/笔数:</div>
+              <div v-show="brokenShow" id="brokenLineParent" style="width:83%"></div>
+              <div class="font1" style="font-size:16px;color:dimgrey;   font-family:微软雅黑;margin-top:35px; font-weight:bold; margin-bottom:5px;" v-show='pillarShow'>次数/耗时(ms):</div>
+                <!-- 柱状图 -->
+              <div v-show='pillarShow' id="pillarLineParent" style="width:83%"></div>
+          </el-tab-pane>
+
+          <!-- 2.业务类型 -->
+          <el-tab-pane label="集群配置" class="history" name="second">
+          		<div class='table-content'>
+<div style="width:80%"> 
+		<b style="color:#708090">系统集群配置 </b>
+		</br>
+		              
+		<el-button  style="display: inline-block;margin-top:5px;" @click="goAdd">新增</el-button>
+        <el-table
+          :data="clusterData"
+          border
+        >
+          <el-table-column
+            prop="cluster_type"
+            label="节点类型"
+            width="180"
+            class="cluster_type"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="cluster_url"
+            label="节点路径"
+           >
+          </el-table-column>
+          <el-table-column
+            prop="cluster_stat"
+            label="节点启动状态">
+            <template slot-scope="scope">
+                <template v-if="scope.row.cluster_stat=='1'">
+                	启动
+                </template>
+                <template v-else>
+                	停止
+                </template>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="cluster_finish"
+            label="节点业务状态"
+            >
+            <template slot-scope="scope">
+                <template v-if="scope.row.cluster_finish=='1'">
+                	业务测试中
+                </template>
+                <template v-else>
+                	测试完成
+                </template>
+            </template>
+          </el-table-column>
+         <el-table-column
+           width="120"
+           align="center"
+            label="操作"
+           >
+          <template slot-scope="scope">
+          	<el-button type="text" size="small"  @click="goUpdateRow(scope.row)" >修改</el-button>
+                 <el-popover
+				        placement="top"
+				        width="180"
+				        v-model="scope.row.visible">
+				    <p><i style="font-size: 12px; width: 8px; color: #F5222D" class="el-alert__icon el-icon-error"></i>&nbsp;&nbsp;{{deleteMessage}}</p>
+				    <div style="text-align: right; margin: 4px 0px 0px 0px">
+				        <el-button size="mini" @click="scope.row.visible = false">取消</el-button>
+				        <el-button type="primary" size="mini" @click="deleteRow(scope.row)">确定</el-button>
+				    </div>
+				    <el-button type="text" size="small"  slot="reference">删除</el-button>
+				</el-popover>
+            </template>
+          </el-table-column>
+        </el-table>
+        </div>
+    </div>
+	<div style="width:80%;padding-left:10px;">
+		<b style="color:#708090">历史测试结果 </b>
+		
+        <el-table
+          :data="tableData"
+          border
+        >
+          <el-table-column
+            prop="process_time"
+            label="测试时间"
+            width="180"
+            class="smalltable1"
+            >
+          </el-table-column>
+          <el-table-column
+            prop="datacfg_content"
+            label="运行配置">
+          </el-table-column>
+          <el-table-column
+            prop=""
+            label="结果详情"
+            align="center"
+            width="100">
+          <template slot-scope="scope">
+                <el-button type="text" class="menu-fonts"  @click="showDetail(scope.row)" size="small">详情
+                </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        </div>
+        <el-dialog :title="title" :close-on-click-modal="false" :visible.sync="dialog_add">
+            <div v-html="detail"></div> 
+        </el-dialog>
+        <el-dialog :close-on-click-modal="false" :visible.sync="dialogUpdateFormVisible">
+                 <div slot="title">
+                     <span style="font-size: 16pt; color: rgba(0,0,0,0.65)">新增节点 </span>
+                 </div>
+                 <el-form ref="addNode" status-icon :model="addNode" label-position="right" label-width="90px" @submit.native.prevent>
+					<el-form-item prop="userName" >
+                         <div slot="label">节点类型<span style="margin-left: 6px">:</span></div>
+				            <el-select class="s1" v-model="nodetypeValue" clearable placeholder="请选择">
+				                      <el-option
+				                          v-for="item in nodetype"
+				                          :key="item.value"
+				                          :label="item.label"
+				                          :value="item.value"
+				                      />
+				            </el-select>
+                     </el-form-item>
+                     <el-form-item prop="userName" >
+                         <div slot="label">节点路径<span style="margin-left: 6px">:</span></div>
+                         <span>
+                              <el-input size="small" v-model="addNode.cluster_url" placeholder="集群URL"></el-input>
+                         </span>
+                     </el-form-item>
+                 </el-form>
+                 <div slot="footer" class="dialog-footer">
+                     <el-button size="small" @click="dialogUpdateFormVisible = false" >取消</el-button>
+                     <el-button size="small" type="primary" @click="addData">确定</el-button>
+                 </div>
+             </el-dialog>
+  <el-dialog :close-on-click-modal="false" :visible.sync="updateFormVisible">
+                 <div slot="title">
+                     <span style="font-size: 16pt; color: rgba(0,0,0,0.65)">修改节点 </span>
+                 </div>
+                 <el-form ref="updateNode" status-icon :model="updateNode" label-position="right" label-width="90px" @submit.native.prevent>
+                     <el-form-item prop="userName" >
+                         <div slot="label">节点路径<span style="margin-left: 6px">:</span></div>
+                         <span>
+                              <el-input size="small" v-model="updateNode.cluster_url" placeholder="集群URL"></el-input>
+                         </span>
+                     </el-form-item>
+                 </el-form>
+                 <div slot="footer" class="dialog-footer">
+                     <el-button size="small" @click="updateFormVisible = false" >取消</el-button>
+                     <el-button size="small" type="primary" @click="updateData">确定</el-button>
+                 </div>
+             </el-dialog>            
+ 
+          </el-tab-pane>
+        </el-tabs>
+    </div>
+    <!-- 引入组件库 -->
+    <script src="js/vue.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="js/element/index.js"></script>
+    <script src='js/echarts.min.js'></script>
+    <script src='js/httpRequest.js'></script>
+    <script src='js/index.js'></script>
+</body>
+</html>

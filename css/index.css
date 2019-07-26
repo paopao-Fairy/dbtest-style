@@ -1,0 +1,186 @@
+
+*{
+  margin: 0%;
+  padding: 0%;
+}
+body{
+ 
+    background-image:url(../image/tu6.jpg);
+	background-attachment:fixed;
+	background-repeat:no-repeat;
+	width:100vw;
+    min-width: 1000px;
+    z-index:-10;
+    zoom: 1;
+	background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-position: center 0;
+   
+}
+
+#app{
+    
+     
+  }
+
+.tab-content {
+    width: 100%;
+    margin: 0 auto;
+    margin: 6px;
+
+}
+.flex-content{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.table-content {
+    width:100%;
+    margin:10px;
+
+}
+.title{
+width: 100%;
+height: 50px;
+background-color:rgba(7, 7, 44, 0.4);
+text-align: center;
+line-height:50px;
+color:white;
+font-family: "Œ¢»Ì—≈∫⁄";
+box-shadow: 2px 4px 6px rgb(30, 30, 68,0.6);
+
+}
+.el-tabs__nav-wrap::after{
+    /* background-color:rgba(7, 7, 44, 0.822); */
+}
+
+
+.selectionbox{
+   width:100%;
+   left:0%;
+   margin: 15px;
+   /* color: white; */
+}
+.el-tabs__item{
+    color: #cccccc;
+}
+/* –‘ƒ‹≤‚∆¿ */
+.performance{
+    /* display:flex;
+    flex-direction: row;
+    flex-wrap:wrap; */
+    width: 100%;
+    margin:10px;
+    /* color:white; */
+}
+.shujubox{
+    width: 100%;
+    /* height: 500px; */
+}
+/* —°‘Ò≤Àµ• */
+.s1{
+ margin: 5px;
+
+ width: 50%;
+
+}
+
+.el-dropdown-link{
+    margin-bottom:10px;
+    display: inline-block;
+}
+
+/* 2 */
+/* ’€œﬂ1 */
+.zhexian1{
+    width: 700px;
+    /* height:300px; */
+    margin-left:20px;
+    margin-top: 10px;
+    margin: 30px;
+}
+/* ÷˘◊¥1 */
+.zhuzhuang1{
+    width: 700px;
+    /* height:300px; */
+    margin-top: 10px;
+}
+/* 4 */
+
+
+
+#brokenLineParent {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-wrap:wrap;
+  justify-content: center;
+  background-color:rgba(230,230,250,0.6);
+  box-shadow: 2px 4px 6px rgb(30, 30, 68,0.4);
+  border-radius:10px;
+	margin-bottom:20px;
+}
+#pillarLineParent {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-wrap:wrap;
+  justify-content: center;
+  background-color:rgba(230,230,250,0.6);
+  box-shadow: 2px 4px 6px rgb(30, 30, 68,0.4);
+  border-radius:10px;
+  margin-bottom:20px;
+}
+.box1{
+	background-color:rgba(230,230,250,0.6);
+	box-shadow: 2px 4px 6px rgb(30, 30, 68,0.4);
+	border-radius:10px;
+	margin-bottom:20px;
+	padding:10px;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.box2{
+	background-color:rgba(230,230,250,0.6);
+	box-shadow: 2px 4px 6px rgb(30, 30, 68,0.4);
+	border-radius:10px;
+	margin-bottom:20px;
+	padding:10px;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.el-tabs__item {
+    color: #708090	;
+    
+}
+.button1,.button2{
+	background-color:rgba(230,230,250,0.6);
+		box-shadow: 2px 4px 6px rgb(30, 30, 68,0.4);
+	
+}
+span{
+	font-size:15px;
+	color:	DimGrey;
+	font-family: "Œ¢»Ì—≈∫⁄";
+	
+}
+path[Attributes Style]{
+	    stroke:rgba(230,230,250,0.6);
+}
+.title1{
+	color:white;
+	text-shadow:5px 2px 6px #000;
+}
+
+.el-button{
+border-radius:10px;
+     margin-left:10px;
+}
+
+.el-table{
+border-radius:10px;
+    margin:10px;
+}
+
+
